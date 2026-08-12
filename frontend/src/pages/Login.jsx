@@ -23,7 +23,18 @@ function Login() {
 
         const token = localStorage.getItem("token");
 
-        const user = JSON.parse(localStorage.getItem("user"));
+        let user = null;
+        const storedUser = localStorage.getItem("user");
+
+        if (storedUser && storedUser !== "undefined" && storedUser !== "null") {
+            try {
+                user = JSON.parse(storedUser);
+            } catch (error) {
+                console.error("Invalid user data in localStorage:", error);
+                localStorage.removeItem("user");
+                localStorage.removeItem("token");
+            }
+        }
 
         if (token && user) {
 
@@ -72,20 +83,33 @@ function Login() {
             );
 
             // Save Token
-            localStorage.setItem(
-                "token",
-                response.data.token
-            );
+            const token = response.data?.token;
+
+            if (!token) {
+                throw new Error("Login response did not contain a token.");
+            }
+
+            localStorage.setItem("token", token);
 
             // Save User
+            // Supports both:
+            // { token, user: { role: "student", ... } }
+            // and { token, role: "student", ... }
+            const loggedInUser =
+                response.data?.user || response.data;
+
+            if (!loggedInUser?.role) {
+                throw new Error("Login response did not contain a user role.");
+            }
+
             localStorage.setItem(
                 "user",
-                JSON.stringify(response.data.user)
+                JSON.stringify(loggedInUser)
             );
 
             toast.success("Login Successful");
 
-            const role = response.data.user.role;
+            const role = loggedInUser.role;
 
             if (role === "admin") {
 
