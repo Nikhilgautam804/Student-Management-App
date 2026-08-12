@@ -4,19 +4,27 @@ const jwt = require("jsonwebtoken");
 
 // ======================= REGISTER =======================
 const register = async (req, res) => {
-    try {
-        const { full_name, email, password, role } = req.body;
 
-        // Check if email already exists
+    try {
+
+        const {
+            username,
+            password,
+            role
+        } = req.body;
+
+        // Check Existing User
         const existingUser = await pool.query(
-            "SELECT * FROM users WHERE email = $1",
-            [email]
+            "SELECT * FROM users WHERE username = $1",
+            [username]
         );
 
         if (existingUser.rows.length > 0) {
+
             return res.status(400).json({
-                message: "Email already exists"
+                message: "Username already exists"
             });
+
         }
 
         // Hash Password
@@ -24,83 +32,163 @@ const register = async (req, res) => {
 
         // Insert User
         await pool.query(
-            `INSERT INTO users(full_name,email,password,role)
-             VALUES($1,$2,$3,$4)`,
-            [full_name, email, hashedPassword, role]
+            `
+            INSERT INTO users
+            (
+                username,
+                password,
+                role
+            )
+            VALUES($1,$2,$3)
+            `,
+            [
+                username,
+                hashedPassword,
+                role
+            ]
         );
 
         res.status(201).json({
+
             message: "User Registered Successfully"
+
         });
 
     } catch (error) {
-        console.log(error);
+
+        console.error(error);
+
         res.status(500).json({
+
             message: "Server Error"
+
         });
+
     }
+
 };
 
 // ======================= LOGIN =======================
 const login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
 
-        // Check if user exists
+    try {
+
+        const {
+
+            username,
+            password
+
+        } = req.body;
+
+        // Find User
         const userResult = await pool.query(
-            "SELECT * FROM users WHERE email = $1",
-            [email]
+
+            "SELECT * FROM users WHERE username = $1",
+
+            [username]
+
         );
 
         if (userResult.rows.length === 0) {
+
             return res.status(400).json({
-                message: "Invalid Email or Password"
+
+                message: "Invalid Username or Password"
+
             });
+
         }
 
         const user = userResult.rows[0];
 
-        // Compare password
-        const isMatch = await bcrypt.compare(password, user.password);
+        // Check Active
+        if (!user.is_active) {
 
-        if (!isMatch) {
-            return res.status(400).json({
-                message: "Invalid Email or Password"
+            return res.status(403).json({
+
+                message: "Account is disabled."
+
             });
+
         }
 
-        // Generate JWT Token
-        const token = jwt.sign(
-            {
-                id: user.id,
-                role: user.role
-            },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: "1d"
-            }
+        // Compare Password
+        const isMatch = await bcrypt.compare(
+
+            password,
+
+            user.password
+
         );
 
+        if (!isMatch) {
+
+            return res.status(400).json({
+
+                message: "Invalid Username or Password"
+
+            });
+
+        }
+
+        // Generate JWT
+        const token = jwt.sign(
+
+    {
+
+        id: user.id,
+
+        username: user.username,
+
+        role: user.role
+
+    },
+
+    process.env.JWT_SECRET,
+
+    {
+
+        expiresIn: "1d"
+
+    }
+
+);
+
         res.status(200).json({
+
             message: "Login Successful",
+
             token,
+
             user: {
+
                 id: user.id,
-                full_name: user.full_name,
-                email: user.email,
+
+                username: user.username,
+
                 role: user.role
+
             }
+
         });
 
     } catch (error) {
-        console.log(error);
+
+        console.error(error);
+
         res.status(500).json({
+
             message: "Server Error"
+
         });
+
     }
+
 };
 
 module.exports = {
+
     register,
     login
+
 };

@@ -1,42 +1,237 @@
+/* ==========================================
+   APP
+========================================== */
+
+html,
+body,
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+html {
+    overflow-x: hidden;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body {
+    min-width: 320px;
+    min-height: 100vh;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+#root {
+    min-height: 100vh;
+    width: 100%;
 }
 
-.card {
-  padding: 2em;
+
+/* ==========================================
+   APP LAYOUT
+========================================== */
+
+.app-layout {
+    width: 100%;
+    min-height: 100vh;
+
+    overflow-x: hidden;
 }
 
-.read-the-docs {
-  color: #888;
+
+/* ==========================================
+   NAVBAR
+========================================== */
+
+.app-layout > .navbar {
+    position: relative !important;
+
+    width: 100%;
+    min-height: 56px;
+
+    z-index: 1000;
+}
+
+
+/* ==========================================
+   SIDEBAR + MAIN CONTENT
+========================================== */
+
+.app-body {
+    display: flex;
+
+    width: 100%;
+    min-height: calc(100vh - 56px);
+
+    align-items: stretch;
+
+    overflow: visible;
+}
+
+
+/* ==========================================
+   MAIN CONTENT
+========================================== */
+
+.app-main {
+    flex: 1 1 auto;
+
+    width: auto;
+    min-width: 0;
+
+    min-height: calc(100vh - 56px);
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: visible;
+}
+
+
+/* ==========================================
+   CONTENT
+========================================== */
+
+.app-content {
+    width: 100%;
+
+    min-height: calc(100vh - 56px);
+
+    padding: 1.5rem;
+
+    box-sizing: border-box;
+}
+
+
+/* ==========================================
+   DESKTOP
+========================================== */
+
+@media (min-width: 992px) {
+
+    .app-body {
+        display: flex;
+
+        width: 100%;
+
+        min-height: calc(100vh - 56px);
+    }
+
+    .app-main {
+        flex: 1 1 auto;
+
+        min-width: 0;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .app-content {
+        width: 100%;
+
+        min-height: calc(100vh - 56px);
+
+        padding: 1.5rem;
+    }
+}
+
+
+/* ==========================================
+   TABLET + MOBILE
+========================================== */
+
+@media (max-width: 991.98px) {
+
+    html,
+    body,
+    #root {
+        width: 100%;
+
+        min-height: 100vh;
+
+        height: auto;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+
+    body {
+        min-width: 320px;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+
+    .app-layout {
+        width: 100%;
+
+        min-height: 100vh;
+
+        overflow-x: hidden;
+    }
+
+
+    /*
+       Mobile par sidebar document flow
+       mein nahi aayega.
+       Bootstrap offcanvas handle karega.
+    */
+
+    .app-body {
+        display: block;
+
+        width: 100%;
+
+        min-height: calc(100vh - 56px);
+
+        overflow: visible;
+    }
+
+
+    .app-main {
+        display: block;
+
+        width: 100% !important;
+        max-width: 100%;
+
+        min-width: 0;
+
+        min-height: calc(100vh - 56px);
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: visible;
+    }
+
+
+    .app-content {
+        width: 100%;
+        max-width: 100%;
+
+        min-height: calc(100vh - 56px);
+
+        padding: 1rem;
+
+        box-sizing: border-box;
+
+        overflow: visible;
+    }
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 575.98px) {
+
+    .app-content {
+        padding: 0.75rem;
+    }
+
 }

@@ -3,8 +3,23 @@ const cors = require("cors");
 require("dotenv").config();
 
 const authRoutes = require("./routes/authRoutes");
-const verifyToken = require("./middleware/authMiddleware");
+const {
+    verifyToken,
+    authorizeRoles
+} = require("./middleware/authMiddleware");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const studentRoutes = require("./routes/studentRoutes");
+const teacherRoutes = require("./routes/teacherRoutes");
+const classRoutes = require("./routes/classRoutes");
+const subjectRoutes = require("./routes/subjectRoutes");
+const classSubjectRoutes = require("./routes/classSubjectRoutes");
+const attendanceRoutes = require("./routes/attendanceRoutes");
+const examRoutes = require("./routes/examRoutes");
+const marksRoutes = require("./routes/marksRoutes");
+const profileRoutes = require("./routes/profileRoutes");
+const teacherDashboardRoutes =
+    require("./routes/teacherDashboardRoutes");
+
 
 const pool = require("./config/db");
 
@@ -22,6 +37,20 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/students", studentRoutes);
+app.use("/api/teachers", teacherRoutes);
+app.use("/api/classes", classRoutes);
+app.use("/api/subjects", subjectRoutes);
+app.use("/api/class-subjects", classSubjectRoutes);
+app.use("/api/attendance", attendanceRoutes);
+app.use("/api/exams", examRoutes);
+app.use("/api/marks", marksRoutes);
+app.use("/api/profile", profileRoutes);
+app.use(
+    "/api/teacher-dashboard",
+    teacherDashboardRoutes
+);
+
 
 app.get("/", (req, res) => {
   res.send("School Management API is Running...");
