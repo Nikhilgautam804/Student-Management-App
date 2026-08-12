@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
+import api from "../services/api";
 
 function StudentProfile() {
 
@@ -34,13 +34,6 @@ function StudentProfile() {
     const token = localStorage.getItem("token");
 
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    };
-
-
     // ==========================================
     // Get Profile
     // ==========================================
@@ -51,10 +44,7 @@ function StudentProfile() {
 
             setLoading(true);
 
-            const response = await axios.get(
-                "http://localhost:5000/api/profile",
-                config
-            );
+            const response = await api.get("/profile");
 
             const data = response.data;
 
@@ -68,7 +58,10 @@ function StudentProfile() {
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Profile fetch error:",
+                error
+            );
 
             toast.error(
                 error.response?.data?.message ||
@@ -92,12 +85,15 @@ function StudentProfile() {
 
 
     // ==========================================
-    // Handle Profile Input
+    // Form Change
     // ==========================================
 
     const handleChange = (e) => {
 
-        const { name, value } = e.target;
+        const {
+            name,
+            value
+        } = e.target;
 
         setFormData(prev => ({
             ...prev,
@@ -119,10 +115,9 @@ function StudentProfile() {
 
             setSaving(true);
 
-            await axios.put(
-                "http://localhost:5000/api/profile",
-                formData,
-                config
+            await api.put(
+                "/profile",
+                formData
             );
 
             toast.success(
@@ -133,7 +128,10 @@ function StudentProfile() {
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Profile update error:",
+                error
+            );
 
             toast.error(
                 error.response?.data?.message ||
@@ -193,6 +191,7 @@ function StudentProfile() {
             e.target.value = "";
 
             return;
+
         }
 
 
@@ -209,6 +208,7 @@ function StudentProfile() {
             e.target.value = "";
 
             return;
+
         }
 
 
@@ -224,14 +224,9 @@ function StudentProfile() {
             );
 
 
-            const response = await axios.post(
-
-                "http://localhost:5000/api/profile/photo",
-
-                data,
-
-                config
-
+            const response = await api.post(
+                "/profile/photo",
+                data
             );
 
 
@@ -241,18 +236,18 @@ function StudentProfile() {
 
 
             setProfile(prev => ({
-
                 ...prev,
-
                 profile_image:
                     response.data.profile_image
-
             }));
 
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Profile photo error:",
+                error
+            );
 
             toast.error(
                 error.response?.data?.message ||
@@ -271,12 +266,15 @@ function StudentProfile() {
 
 
     // ==========================================
-    // Password Input
+    // Password
     // ==========================================
 
     const handlePasswordChange = (e) => {
 
-        const { name, value } = e.target;
+        const {
+            name,
+            value
+        } = e.target;
 
         setPasswordData(prev => ({
             ...prev,
@@ -306,6 +304,7 @@ function StudentProfile() {
             );
 
             return;
+
         }
 
 
@@ -319,16 +318,20 @@ function StudentProfile() {
             );
 
             return;
+
         }
 
 
-        if (passwordData.newPassword.length < 6) {
+        if (
+            passwordData.newPassword.length < 6
+        ) {
 
             toast.error(
                 "New password must be at least 6 characters."
             );
 
             return;
+
         }
 
 
@@ -336,20 +339,16 @@ function StudentProfile() {
 
             setChangingPassword(true);
 
-            await axios.put(
 
-                "http://localhost:5000/api/profile/password",
-
+            await api.put(
+                "/profile/password",
                 {
                     currentPassword:
                         passwordData.currentPassword,
 
                     newPassword:
                         passwordData.newPassword
-                },
-
-                config
-
+                }
             );
 
 
@@ -367,7 +366,10 @@ function StudentProfile() {
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Password change error:",
+                error
+            );
 
             toast.error(
                 error.response?.data?.message ||
@@ -433,220 +435,671 @@ function StudentProfile() {
 
 
     return (
-        
-            <Layout>
 
-        <div className="container-fluid">
+        <Layout>
 
-            {/* ==========================================
-                PAGE HEADER
-            ========================================== */}
-
-            <div className="mb-4">
-
-                <h2 className="fw-bold mb-1">
-
-                    My Profile
-
-                </h2>
-
-                <p className="text-muted mb-0">
-
-                    View and manage your personal information.
-
-                </p>
-
-            </div>
+            <div className="container-fluid">
 
 
-            {/* ==========================================
-                PROFILE HEADER
-            ========================================== */}
+                {/* ==========================================
+                    PAGE HEADER
+                ========================================== */}
 
-            <div className="card border-0 shadow-sm rounded-4 mb-4">
+                <div className="mb-4">
 
-                <div className="card-body p-4">
+                    <h2 className="fw-bold mb-1">
+                        My Profile
+                    </h2>
 
-                    <div className="row align-items-center">
+                    <p className="text-muted mb-0">
+                        View and manage your personal information.
+                    </p>
 
-                        {/* PHOTO */}
+                </div>
 
-                        <div className="col-md-3 text-center">
 
-                            <div
-                                className="mx-auto position-relative"
-                                style={{
-                                    width: "150px",
-                                    height: "150px"
-                                }}
-                            >
+                {/* ==========================================
+                    PROFILE HEADER
+                ========================================== */}
 
-                                {
-                                    profile.profile_image ? (
+                <div className="card border-0 shadow-sm rounded-4 mb-4">
 
-                                        <img
-                                            src={
-                                                profile.profile_image
+                    <div className="card-body p-4">
+
+                        <div className="row align-items-center">
+
+
+                            {/* PHOTO */}
+
+                            <div className="col-md-3 text-center">
+
+                                <div
+                                    className="mx-auto position-relative"
+                                    style={{
+                                        width: "150px",
+                                        height: "150px"
+                                    }}
+                                >
+
+                                    {
+                                        profile.profile_image ? (
+
+                                            <img
+                                                src={
+                                                    profile.profile_image
+                                                }
+                                                alt="Profile"
+                                                className="rounded-circle shadow"
+                                                style={{
+                                                    width: "150px",
+                                                    height: "150px",
+                                                    objectFit: "cover"
+                                                }}
+                                            />
+
+                                        ) : (
+
+                                            <div
+                                                className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center shadow"
+                                                style={{
+                                                    width: "150px",
+                                                    height: "150px",
+                                                    fontSize: "55px"
+                                                }}
+                                            >
+
+                                                <i className="bi bi-person-fill"></i>
+
+                                            </div>
+
+                                        )
+                                    }
+
+                                </div>
+
+
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={
+                                        handlePhotoUpload
+                                    }
+                                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                                    style={{
+                                        display: "none"
+                                    }}
+                                />
+
+
+                                <button
+                                    type="button"
+                                    className="btn btn-primary rounded-pill mt-3 px-4"
+                                    onClick={
+                                        handlePhotoClick
+                                    }
+                                    disabled={uploading}
+                                >
+
+                                    {
+                                        uploading ? (
+
+                                            <>
+                                                <span
+                                                    className="spinner-border spinner-border-sm me-2"
+                                                ></span>
+
+                                                Uploading...
+                                            </>
+
+                                        ) : (
+
+                                            <>
+                                                <i className="bi bi-camera-fill me-2"></i>
+
+                                                Change Photo
+                                            </>
+
+                                        )
+                                    }
+
+                                </button>
+
+
+                                <div className="small text-muted mt-2">
+
+                                    JPG, PNG or WEBP • Max 2 MB
+
+                                </div>
+
+                            </div>
+
+
+                            {/* BASIC INFO */}
+
+                            <div className="col-md-9 mt-4 mt-md-0">
+
+                                <div className="d-flex align-items-center mb-2">
+
+                                    <h3 className="fw-bold mb-0">
+
+                                        {profile.full_name}
+
+                                    </h3>
+
+                                    <span className="badge bg-primary ms-3">
+
+                                        Student
+
+                                    </span>
+
+                                </div>
+
+
+                                <p className="text-muted mb-3">
+
+                                    <i className="bi bi-person-badge me-2"></i>
+
+                                    Roll No:
+
+                                    <strong className="ms-1">
+
+                                        {profile.roll_no}
+
+                                    </strong>
+
+                                </p>
+
+
+                                <div className="row">
+
+                                    <div className="col-md-4">
+
+                                        <small className="text-muted d-block">
+                                            Username
+                                        </small>
+
+                                        <strong>
+                                            {profile.username}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div className="col-md-4">
+
+                                        <small className="text-muted d-block">
+                                            Gender
+                                        </small>
+
+                                        <strong>
+
+                                            {
+                                                profile.gender ||
+                                                "Not available"
                                             }
-                                            alt="Profile"
-                                            className="rounded-circle shadow"
-                                            style={{
-                                                width: "150px",
-                                                height: "150px",
-                                                objectFit: "cover"
-                                            }}
-                                        />
 
-                                    ) : (
+                                        </strong>
 
-                                        <div
-                                            className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center shadow"
-                                            style={{
-                                                width: "150px",
-                                                height: "150px",
-                                                fontSize: "55px"
-                                            }}
-                                        >
+                                    </div>
 
-                                            <i className="bi bi-person-fill"></i>
+
+                                    <div className="col-md-4">
+
+                                        <small className="text-muted d-block">
+                                            Class
+                                        </small>
+
+                                        <strong>
+
+                                            {
+                                                profile.class_name
+                                                    ? `${profile.class_name}${
+                                                        profile.section
+                                                            ? ` - ${profile.section}`
+                                                            : ""
+                                                    }`
+                                                    : "Not available"
+                                            }
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div className="row">
+
+
+                    {/* ==========================================
+                        PERSONAL INFORMATION
+                    ========================================== */}
+
+                    <div className="col-lg-7 mb-4">
+
+                        <div className="card border-0 shadow-sm rounded-4 h-100">
+
+                            <div className="card-header bg-white border-0 pt-4 px-4">
+
+                                <h5 className="fw-bold mb-1">
+
+                                    <i className="bi bi-person-lines-fill text-primary me-2"></i>
+
+                                    Personal Information
+
+                                </h5>
+
+                                <small className="text-muted">
+
+                                    Update your contact information.
+
+                                </small>
+
+                            </div>
+
+
+                            <div className="card-body p-4">
+
+                                <form
+                                    onSubmit={
+                                        handleSaveProfile
+                                    }
+                                >
+
+
+                                    {/* Full Name */}
+
+                                    <div className="mb-3">
+
+                                        <label className="form-label fw-semibold">
+
+                                            Full Name
+
+                                        </label>
+
+                                        <div className="input-group">
+
+                                            <span className="input-group-text bg-light">
+
+                                                <i className="bi bi-person"></i>
+
+                                            </span>
+
+
+                                            <input
+                                                type="text"
+                                                className="form-control bg-light"
+                                                value={
+                                                    profile.full_name ||
+                                                    ""
+                                                }
+                                                disabled
+                                            />
+
+
+                                            <span className="input-group-text bg-light">
+
+                                                <i className="bi bi-lock text-muted"></i>
+
+                                            </span>
 
                                         </div>
 
-                                    )
+
+                                        <small className="text-muted">
+
+                                            Name cannot be changed by the student.
+
+                                        </small>
+
+                                    </div>
 
 
-                                }
+                                    {/* Roll Number */}
 
-                            </div>
+                                    <div className="mb-3">
 
+                                        <label className="form-label fw-semibold">
 
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                onChange={handlePhotoUpload}
-                                accept="image/jpeg,image/jpg,image/png,image/webp"
-                                style={{
-                                    display: "none"
-                                }}
-                            />
+                                            Roll Number
 
+                                        </label>
 
-                            <button
-                                type="button"
-                                className="btn btn-primary rounded-pill mt-3 px-4"
-                                onClick={handlePhotoClick}
-                                disabled={uploading}
-                            >
+                                        <div className="input-group">
 
-                                {
-                                    uploading ? (
+                                            <span className="input-group-text bg-light">
 
-                                        <>
-                                            <span
-                                                className="spinner-border spinner-border-sm me-2"
-                                            ></span>
+                                                <i className="bi bi-card-text"></i>
 
-                                            Uploading...
-
-                                        </>
-
-                                    ) : (
-
-                                        <>
-                                            <i className="bi bi-camera-fill me-2"></i>
-
-                                            Change Photo
-                                        </>
-
-                                    )
-                                }
-
-                            </button>
+                                            </span>
 
 
-                            <div className="small text-muted mt-2">
+                                            <input
+                                                type="text"
+                                                className="form-control bg-light"
+                                                value={
+                                                    profile.roll_no ||
+                                                    ""
+                                                }
+                                                disabled
+                                            />
 
-                                JPG, PNG or WEBP • Max 2 MB
+
+                                            <span className="input-group-text bg-light">
+
+                                                <i className="bi bi-lock text-muted"></i>
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {/* Email */}
+
+                                    <div className="mb-3">
+
+                                        <label className="form-label fw-semibold">
+
+                                            Email
+
+                                        </label>
+
+
+                                        <div className="input-group">
+
+                                            <span className="input-group-text">
+
+                                                <i className="bi bi-envelope"></i>
+
+                                            </span>
+
+
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                className="form-control"
+                                                value={
+                                                    formData.email
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                            />
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {/* Phone */}
+
+                                    <div className="mb-3">
+
+                                        <label className="form-label fw-semibold">
+
+                                            Phone
+
+                                        </label>
+
+
+                                        <div className="input-group">
+
+                                            <span className="input-group-text">
+
+                                                <i className="bi bi-telephone"></i>
+
+                                            </span>
+
+
+                                            <input
+                                                type="text"
+                                                name="phone"
+                                                className="form-control"
+                                                value={
+                                                    formData.phone
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                            />
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {/* Address */}
+
+                                    <div className="mb-4">
+
+                                        <label className="form-label fw-semibold">
+
+                                            Address
+
+                                        </label>
+
+
+                                        <div className="input-group">
+
+                                            <span className="input-group-text align-items-start">
+
+                                                <i className="bi bi-geo-alt"></i>
+
+                                            </span>
+
+
+                                            <textarea
+                                                name="address"
+                                                className="form-control"
+                                                rows="3"
+                                                value={
+                                                    formData.address
+                                                }
+                                                onChange={
+                                                    handleChange
+                                                }
+                                            ></textarea>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary rounded-pill px-4"
+                                        disabled={saving}
+                                    >
+
+                                        {
+                                            saving ? (
+
+                                                <>
+                                                    <span
+                                                        className="spinner-border spinner-border-sm me-2"
+                                                    ></span>
+
+                                                    Saving...
+                                                </>
+
+                                            ) : (
+
+                                                <>
+                                                    <i className="bi bi-check-lg me-2"></i>
+
+                                                    Save Changes
+                                                </>
+
+                                            )
+                                        }
+
+                                    </button>
+
+                                </form>
 
                             </div>
 
                         </div>
 
+                    </div>
 
-                        {/* BASIC INFO */}
 
-                        <div className="col-md-9 mt-4 mt-md-0">
+                    {/* ==========================================
+                        SECURITY
+                    ========================================== */}
 
-                            <div className="d-flex align-items-center mb-2">
+                    <div className="col-lg-5 mb-4">
 
-                                <h3 className="fw-bold mb-0">
+                        <div className="card border-0 shadow-sm rounded-4">
 
-                                    {profile.full_name}
+                            <div className="card-header bg-white border-0 pt-4 px-4">
 
-                                </h3>
+                                <h5 className="fw-bold mb-1">
 
-                                <span className="badge bg-primary ms-3">
+                                    <i className="bi bi-shield-lock-fill text-danger me-2"></i>
 
-                                    Student
+                                    Security
 
-                                </span>
+                                </h5>
+
+                                <small className="text-muted">
+
+                                    Keep your account secure.
+
+                                </small>
 
                             </div>
 
 
-                            <p className="text-muted mb-3">
+                            <div className="card-body p-4">
 
-                                <i className="bi bi-person-badge me-2"></i>
-
-                                Roll No: <strong>
-                                    {profile.roll_no}
-                                </strong>
-
-                            </p>
+                                <form
+                                    onSubmit={
+                                        handleChangePassword
+                                    }
+                                >
 
 
-                            <div className="row">
+                                    <div className="mb-3">
 
-                                <div className="col-md-4">
+                                        <label className="form-label fw-semibold">
 
-                                    <small className="text-muted d-block">
-                                        Username
-                                    </small>
+                                            Current Password
 
-                                    <strong>
-                                        {profile.username}
-                                    </strong>
-
-                                </div>
+                                        </label>
 
 
-                                <div className="col-md-4">
+                                        <input
+                                            type="password"
+                                            name="currentPassword"
+                                            className="form-control"
+                                            value={
+                                                passwordData.currentPassword
+                                            }
+                                            onChange={
+                                                handlePasswordChange
+                                            }
+                                            placeholder="Enter current password"
+                                        />
 
-                                    <small className="text-muted d-block">
-                                        Gender
-                                    </small>
-
-                                    <strong>
-                                        {profile.gender || "Not available"}
-                                    </strong>
-
-                                </div>
+                                    </div>
 
 
-                                <div className="col-md-4">
+                                    <div className="mb-3">
 
-    <small className="text-muted d-block">
-        Class
-    </small>
+                                        <label className="form-label fw-semibold">
 
-    <strong>
-        {profile.class_name
-            ? `${profile.class_name}${profile.section ? ` - ${profile.section}` : ""}`
-            : "Not available"
-        }
-    </strong>
+                                            New Password
 
-</div>
+                                        </label>
+
+
+                                        <input
+                                            type="password"
+                                            name="newPassword"
+                                            className="form-control"
+                                            value={
+                                                passwordData.newPassword
+                                            }
+                                            onChange={
+                                                handlePasswordChange
+                                            }
+                                            placeholder="Enter new password"
+                                        />
+
+                                    </div>
+
+
+                                    <div className="mb-4">
+
+                                        <label className="form-label fw-semibold">
+
+                                            Confirm New Password
+
+                                        </label>
+
+
+                                        <input
+                                            type="password"
+                                            name="confirmPassword"
+                                            className="form-control"
+                                            value={
+                                                passwordData.confirmPassword
+                                            }
+                                            onChange={
+                                                handlePasswordChange
+                                            }
+                                            placeholder="Confirm new password"
+                                        />
+
+                                    </div>
+
+
+                                    <button
+                                        type="submit"
+                                        className="btn btn-danger rounded-pill px-4 w-100"
+                                        disabled={
+                                            changingPassword
+                                        }
+                                    >
+
+                                        {
+                                            changingPassword ? (
+
+                                                <>
+                                                    <span
+                                                        className="spinner-border spinner-border-sm me-2"
+                                                    ></span>
+
+                                                    Changing Password...
+
+                                                </>
+
+                                            ) : (
+
+                                                <>
+                                                    <i className="bi bi-key-fill me-2"></i>
+
+                                                    Change Password
+
+                                                </>
+
+                                            )
+                                        }
+
+                                    </button>
+
+                                </form>
 
                             </div>
 
@@ -658,400 +1111,6 @@ function StudentProfile() {
 
             </div>
 
-
-            <div className="row">
-
-                {/* ==========================================
-                    PERSONAL INFORMATION
-                ========================================== */}
-
-                <div className="col-lg-7 mb-4">
-
-                    <div className="card border-0 shadow-sm rounded-4 h-100">
-
-                        <div className="card-header bg-white border-0 pt-4 px-4">
-
-                            <h5 className="fw-bold mb-1">
-
-                                <i className="bi bi-person-lines-fill text-primary me-2"></i>
-
-                                Personal Information
-
-                            </h5>
-
-                            <small className="text-muted">
-
-                                Update your contact information.
-
-                            </small>
-
-                        </div>
-
-
-                        <div className="card-body p-4">
-
-                            <form onSubmit={handleSaveProfile}>
-
-                                {/* Full Name */}
-
-                                <div className="mb-3">
-
-                                    <label className="form-label fw-semibold">
-
-                                        Full Name
-
-                                    </label>
-
-                                    <div className="input-group">
-
-                                        <span className="input-group-text bg-light">
-
-                                            <i className="bi bi-person"></i>
-
-                                        </span>
-
-                                        <input
-                                            type="text"
-                                            className="form-control bg-light"
-                                            value={
-                                                profile.full_name || ""
-                                            }
-                                            disabled
-                                        />
-
-                                        <span className="input-group-text bg-light">
-
-                                            <i className="bi bi-lock text-muted"></i>
-
-                                        </span>
-
-                                    </div>
-
-                                    <small className="text-muted">
-
-                                        Name cannot be changed by the student.
-
-                                    </small>
-
-                                </div>
-
-
-                                {/* Roll Number */}
-
-                                <div className="mb-3">
-
-                                    <label className="form-label fw-semibold">
-
-                                        Roll Number
-
-                                    </label>
-
-                                    <div className="input-group">
-
-                                        <span className="input-group-text bg-light">
-
-                                            <i className="bi bi-card-text"></i>
-
-                                        </span>
-
-                                        <input
-                                            type="text"
-                                            className="form-control bg-light"
-                                            value={
-                                                profile.roll_no || ""
-                                            }
-                                            disabled
-                                        />
-
-                                        <span className="input-group-text bg-light">
-
-                                            <i className="bi bi-lock text-muted"></i>
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                {/* Email */}
-
-                                <div className="mb-3">
-
-                                    <label className="form-label fw-semibold">
-
-                                        Email
-
-                                    </label>
-
-                                    <div className="input-group">
-
-                                        <span className="input-group-text">
-
-                                            <i className="bi bi-envelope"></i>
-
-                                        </span>
-
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            className="form-control"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                        />
-
-                                    </div>
-
-                                </div>
-
-
-                                {/* Phone */}
-
-                                <div className="mb-3">
-
-                                    <label className="form-label fw-semibold">
-
-                                        Phone
-
-                                    </label>
-
-                                    <div className="input-group">
-
-                                        <span className="input-group-text">
-
-                                            <i className="bi bi-telephone"></i>
-
-                                        </span>
-
-                                        <input
-                                            type="text"
-                                            name="phone"
-                                            className="form-control"
-                                            value={formData.phone}
-                                            onChange={handleChange}
-                                        />
-
-                                    </div>
-
-                                </div>
-
-
-                                {/* Address */}
-
-                                <div className="mb-4">
-
-                                    <label className="form-label fw-semibold">
-
-                                        Address
-
-                                    </label>
-
-                                    <div className="input-group">
-
-                                        <span className="input-group-text align-items-start">
-
-                                            <i className="bi bi-geo-alt"></i>
-
-                                        </span>
-
-                                        <textarea
-                                            name="address"
-                                            className="form-control"
-                                            rows="3"
-                                            value={formData.address}
-                                            onChange={handleChange}
-                                        ></textarea>
-
-                                    </div>
-
-                                </div>
-
-
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary rounded-pill px-4"
-                                    disabled={saving}
-                                >
-
-                                    {
-                                        saving ? (
-
-                                            <>
-                                                <span
-                                                    className="spinner-border spinner-border-sm me-2"
-                                                ></span>
-
-                                                Saving...
-
-                                            </>
-
-                                        ) : (
-
-                                            <>
-                                                <i className="bi bi-check-lg me-2"></i>
-
-                                                Save Changes
-                                            </>
-
-                                        )
-                                    }
-
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                {/* ==========================================
-                    SECURITY
-                ========================================== */}
-
-                <div className="col-lg-5 mb-4">
-
-                    <div className="card border-0 shadow-sm rounded-4">
-
-                        <div className="card-header bg-white border-0 pt-4 px-4">
-
-                            <h5 className="fw-bold mb-1">
-
-                                <i className="bi bi-shield-lock-fill text-danger me-2"></i>
-
-                                Security
-
-                            </h5>
-
-                            <small className="text-muted">
-
-                                Keep your account secure.
-
-                            </small>
-
-                        </div>
-
-
-                        <div className="card-body p-4">
-
-                            <form onSubmit={handleChangePassword}>
-
-                                <div className="mb-3">
-
-                                    <label className="form-label fw-semibold">
-
-                                        Current Password
-
-                                    </label>
-
-                                    <input
-                                        type="password"
-                                        name="currentPassword"
-                                        className="form-control"
-                                        value={
-                                            passwordData.currentPassword
-                                        }
-                                        onChange={
-                                            handlePasswordChange
-                                        }
-                                        placeholder="Enter current password"
-                                    />
-
-                                </div>
-
-
-                                <div className="mb-3">
-
-                                    <label className="form-label fw-semibold">
-
-                                        New Password
-
-                                    </label>
-
-                                    <input
-                                        type="password"
-                                        name="newPassword"
-                                        className="form-control"
-                                        value={
-                                            passwordData.newPassword
-                                        }
-                                        onChange={
-                                            handlePasswordChange
-                                        }
-                                        placeholder="Enter new password"
-                                    />
-
-                                </div>
-
-
-                                <div className="mb-4">
-
-                                    <label className="form-label fw-semibold">
-
-                                        Confirm New Password
-
-                                    </label>
-
-                                    <input
-                                        type="password"
-                                        name="confirmPassword"
-                                        className="form-control"
-                                        value={
-                                            passwordData.confirmPassword
-                                        }
-                                        onChange={
-                                            handlePasswordChange
-                                        }
-                                        placeholder="Confirm new password"
-                                    />
-
-                                </div>
-
-
-                                <button
-                                    type="submit"
-                                    className="btn btn-danger rounded-pill px-4 w-100"
-                                    disabled={changingPassword}
-                                >
-
-                                    {
-                                        changingPassword ? (
-
-                                            <>
-                                                <span
-                                                    className="spinner-border spinner-border-sm me-2"
-                                                ></span>
-
-                                                Changing Password...
-
-                                            </>
-
-                                        ) : (
-
-                                            <>
-                                                <i className="bi bi-key-fill me-2"></i>
-
-                                                Change Password
-                                            </>
-
-                                        )
-                                    }
-
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
         </Layout>
 
     );

@@ -1,15 +1,18 @@
-import api from "./api";
+import axios from "axios";
 
-// ==================================================
-// GET MY STUDENTS
-// ==================================================
+const API_URL = "http://localhost:5000/api/teachers";
 
 export const getMyStudents = async () => {
+    const token = localStorage.getItem("token");
 
-    const response = await api.get(
-        "/teachers/students"
+    const response = await axios.get(
+        `${API_URL}/students`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
     );
 
     return response.data;
-
 };
