@@ -27,7 +27,6 @@ const pool = require("./config/db");
 
 const app = express();
 
-
 // ==================================================
 // CORS
 // ==================================================
@@ -77,144 +76,46 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
-const corsOptions = {
-
-    origin: function (origin, callback) {
-
-        // Allow requests without an origin
-        // such as Postman/server-to-server requests
-
-        if (!origin) {
-            return callback(null, true);
-        }
-
-
-        if (allowedOrigins.includes(origin)) {
-
-            return callback(null, true);
-
-        }
-
-
-        return callback(
-            new Error("Not allowed by CORS")
-        );
-
-    },
-
-    credentials: true,
-
-    methods: [
-        "GET",
-        "POST",
-        "PUT",
-        "PATCH",
-        "DELETE",
-        "OPTIONS"
-    ],
-
-    allowedHeaders: [
-        "Content-Type",
-        "Authorization"
-    ]
-
-};
-
-
-app.use(cors(corsOptions));
-
 app.use(express.json());
-
 
 // ==================================================
 // API ROUTES
 // ==================================================
 
-app.use(
-    "/api/auth",
-    authRoutes
-);
+app.use("/api/auth", authRoutes);
 
+app.use("/api/dashboard", dashboardRoutes);
 
-app.use(
-    "/api/dashboard",
-    dashboardRoutes
-);
+app.use("/api/students", studentRoutes);
 
+app.use("/api/teachers", teacherRoutes);
 
-app.use(
-    "/api/students",
-    studentRoutes
-);
+app.use("/api/classes", classRoutes);
 
+app.use("/api/subjects", subjectRoutes);
 
-app.use(
-    "/api/teachers",
-    teacherRoutes
-);
+app.use("/api/class-subjects", classSubjectRoutes);
 
+app.use("/api/attendance", attendanceRoutes);
 
-app.use(
-    "/api/classes",
-    classRoutes
-);
+app.use("/api/exams", examRoutes);
 
+app.use("/api/marks", marksRoutes);
 
-app.use(
-    "/api/subjects",
-    subjectRoutes
-);
-
-
-app.use(
-    "/api/class-subjects",
-    classSubjectRoutes
-);
-
-
-app.use(
-    "/api/attendance",
-    attendanceRoutes
-);
-
-
-app.use(
-    "/api/exams",
-    examRoutes
-);
-
-
-app.use(
-    "/api/marks",
-    marksRoutes
-);
-
-
-app.use(
-    "/api/profile",
-    profileRoutes
-);
-
+app.use("/api/profile", profileRoutes);
 
 app.use(
     "/api/teacher-dashboard",
     teacherDashboardRoutes
 );
 
-
 // ==================================================
 // ROOT
 // ==================================================
 
 app.get("/", (req, res) => {
-
-    res.send(
-        "School Management API is Running..."
-    );
-
+    res.send("School Management API is Running...");
 });
-
 
 // ==================================================
 // PROTECTED PROFILE TEST
@@ -226,17 +127,12 @@ app.get(
     (req, res) => {
 
         res.json({
-
-            message:
-                "Protected Route Accessed",
-
+            message: "Protected Route Accessed",
             user: req.user
-
         });
 
     }
 );
-
 
 // ==================================================
 // DATABASE TEST
@@ -248,32 +144,21 @@ app.get(
 
         try {
 
-            const result =
-                await pool.query(
-                    "SELECT NOW()"
-                );
-
+            const result = await pool.query(
+                "SELECT NOW()"
+            );
 
             res.json({
-
-                message:
-                    "Database Connected Successfully!",
-
-                time:
-                    result.rows[0].now
-
+                message: "Database Connected Successfully!",
+                time: result.rows[0].now
             });
 
         } catch (error) {
 
             console.error(error);
 
-
             res.status(500).json({
-
-                message:
-                    "Database Connection Failed"
-
+                message: "Database Connection Failed"
             });
 
         }
@@ -281,14 +166,11 @@ app.get(
     }
 );
 
-
 // ==================================================
 // SERVER
 // ==================================================
 
-const PORT =
-    process.env.PORT || 5000;
-
+const PORT = process.env.PORT || 5000;
 
 app.listen(
     PORT,
