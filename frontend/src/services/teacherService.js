@@ -1,18 +1,28 @@
-import axios from "axios";
+import api from "./api";
 
-const API_URL = "http://localhost:5000/api/teachers";
+// ==========================================
+// Teacher Dashboard - My Students
+// ==========================================
 
 export const getMyStudents = async () => {
-    const token = localStorage.getItem("token");
 
-    const response = await axios.get(
-        `${API_URL}/students`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-    );
+    try {
 
-    return response.data;
+        const response = await api.get(
+            "/teachers/students"
+        );
+
+        return response.data;
+
+    } catch (error) {
+
+        console.error(
+            "Get My Students Error:",
+            error
+        );
+
+        throw error;
+
+    }
+
 };
