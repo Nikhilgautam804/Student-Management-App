@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../services/api";
 
 function Navbar({ collapsed, setCollapsed }) {
 
@@ -29,14 +29,7 @@ function Navbar({ collapsed, setCollapsed }) {
                 return;
             }
 
-            const response = await axios.get(
-                "http://localhost:5000/api/profile",
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
+            const response = await api.get("/profile");
 
             setProfile(
                 response.data?.profile ||
@@ -160,15 +153,15 @@ function Navbar({ collapsed, setCollapsed }) {
         */
 
         <nav
-    className="navbar navbar-expand-lg navbar-dark bg-primary shadow"
-    style={{
-        minHeight: "56px",
-        width: "100%",
-        maxWidth: "100%",
-        alignSelf: "stretch",
-        zIndex: 1000
-    }}
->
+            className="navbar navbar-expand-lg navbar-dark bg-primary shadow"
+            style={{
+                minHeight: "56px",
+                width: "100%",
+                maxWidth: "100%",
+                alignSelf: "stretch",
+                zIndex: 1000
+            }}
+        >
 
             <div className="container-fluid">
 
@@ -336,7 +329,6 @@ function Navbar({ collapsed, setCollapsed }) {
         </nav>
 
     );
-
 }
 
 export default Navbar;
