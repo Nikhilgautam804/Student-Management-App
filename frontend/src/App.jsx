@@ -44,7 +44,7 @@ import ClassSubjects from "./pages/ClassSubjects";
 import Exams from "./pages/Exams";
 import Login from "./pages/Login";
 import Marks from "./pages/Marks";
-import Students from "./pages/Students";
+import Students from "./pages/students";
 import Subjects from "./pages/Subjects";
 import Teachers from "./pages/Teachers";
 
