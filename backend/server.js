@@ -34,8 +34,48 @@ const app = express();
 
 const allowedOrigins = [
     "http://localhost:5173",
+    "https://student-management-frontend-f50e.onrender.com",
     process.env.FRONTEND_URL
 ].filter(Boolean);
+
+const corsOptions = {
+    origin: function (origin, callback) {
+
+        console.log("CORS request from:", origin);
+
+        // Allow requests without an origin
+        if (!origin) {
+            return callback(null, true);
+        }
+
+        // Allow known origins
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        console.log("CORS BLOCKED:", origin);
+
+        return callback(new Error("Not allowed by CORS"));
+    },
+
+    credentials: true,
+
+    methods: [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "OPTIONS"
+    ],
+
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization"
+    ]
+};
+
+app.use(cors(corsOptions));
 
 
 const corsOptions = {
