@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
+import api from "../services/api";
 
 function TeacherProfile() {
 
@@ -46,28 +46,6 @@ function TeacherProfile() {
 
 
     // ==========================================
-    // Token
-    // ==========================================
-
-    const token = localStorage.getItem("token");
-
-
-    // ==========================================
-    // Axios Config
-    // ==========================================
-
-    const config = {
-
-        headers: {
-
-            Authorization: `Bearer ${token}`
-
-        }
-
-    };
-
-
-    // ==========================================
     // Fetch Profile
     // ==========================================
 
@@ -78,13 +56,7 @@ function TeacherProfile() {
             setLoading(true);
 
 
-            const response = await axios.get(
-
-                "http://localhost:5000/api/profile",
-
-                config
-
-            );
+            const response = await api.get("/profile");
 
 
             const data = response.data;
@@ -108,7 +80,10 @@ function TeacherProfile() {
 
         catch (error) {
 
-            console.error(error);
+            console.error(
+                "Teacher profile error:",
+                error
+            );
 
 
             toast.error(
@@ -175,13 +150,11 @@ function TeacherProfile() {
             setSaving(true);
 
 
-            await axios.put(
+            await api.put(
 
-                "http://localhost:5000/api/profile",
+                "/profile",
 
-                formData,
-
-                config
+                formData
 
             );
 
@@ -206,7 +179,10 @@ function TeacherProfile() {
 
         catch (error) {
 
-            console.error(error);
+            console.error(
+                "Update profile error:",
+                error
+            );
 
 
             toast.error(
@@ -319,13 +295,11 @@ function TeacherProfile() {
             );
 
 
-            const response = await axios.post(
+            const response = await api.post(
 
-                "http://localhost:5000/api/profile/photo",
+                "/profile/photo",
 
-                data,
-
-                config
+                data
 
             );
 
@@ -335,7 +309,6 @@ function TeacherProfile() {
                 ...prev,
 
                 profile_image:
-
                     response.data.profile_image
 
             }));
@@ -358,7 +331,10 @@ function TeacherProfile() {
 
         catch (error) {
 
-            console.error(error);
+            console.error(
+                "Profile photo error:",
+                error
+            );
 
 
             toast.error(
@@ -472,9 +448,9 @@ function TeacherProfile() {
             setChangingPassword(true);
 
 
-            await axios.put(
+            await api.put(
 
-                "http://localhost:5000/api/profile/password",
+                "/profile/password",
 
                 {
 
@@ -484,9 +460,7 @@ function TeacherProfile() {
                     newPassword:
                         passwordData.newPassword
 
-                },
-
-                config
+                }
 
             );
 
@@ -512,7 +486,10 @@ function TeacherProfile() {
 
         catch (error) {
 
-            console.error(error);
+            console.error(
+                "Change password error:",
+                error
+            );
 
 
             toast.error(
@@ -624,6 +601,7 @@ function TeacherProfile() {
 
                     </h2>
 
+
                     <p className="text-muted">
 
                         View and manage your teacher profile.
@@ -722,7 +700,9 @@ function TeacherProfile() {
                                     accept="image/jpeg,image/jpg,image/png,image/webp"
 
                                     style={{
+
                                         display: "none"
+
                                     }}
 
                                 />
@@ -932,7 +912,9 @@ function TeacherProfile() {
                                             className="form-control bg-light"
 
                                             value={
+
                                                 profile.full_name || ""
+
                                             }
 
                                             disabled
@@ -965,7 +947,9 @@ function TeacherProfile() {
                                             className="form-control bg-light"
 
                                             value={
+
                                                 profile.teacher_code || ""
+
                                             }
 
                                             disabled
@@ -991,7 +975,9 @@ function TeacherProfile() {
                                             className="form-control bg-light"
 
                                             value={
+
                                                 profile.qualification || ""
+
                                             }
 
                                             disabled
@@ -1172,7 +1158,9 @@ function TeacherProfile() {
                                         placeholder="Current Password"
 
                                         value={
+
                                             passwordData.currentPassword
+
                                         }
 
                                         onChange={handlePasswordChange}
@@ -1191,7 +1179,9 @@ function TeacherProfile() {
                                         placeholder="New Password"
 
                                         value={
+
                                             passwordData.newPassword
+
                                         }
 
                                         onChange={handlePasswordChange}
@@ -1210,7 +1200,9 @@ function TeacherProfile() {
                                         placeholder="Confirm New Password"
 
                                         value={
+
                                             passwordData.confirmPassword
+
                                         }
 
                                         onChange={handlePasswordChange}
@@ -1263,6 +1255,7 @@ function TeacherProfile() {
                     </div>
 
                 </div>
+
 
             </div>
 
