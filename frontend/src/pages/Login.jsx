@@ -95,13 +95,10 @@ function Login() {
         }
 
         try {
-
             setLoading(true);
 
-            // Remove old login data
             localStorage.removeItem("token");
             localStorage.removeItem("user");
-
 
             // ==================================================
             // LOGIN API
@@ -117,11 +114,6 @@ function Login() {
                 response.data
             );
 
-
-            // ==================================================
-            // CHECK RESPONSE
-            // ==================================================
-
             if (!response || !response.data) {
                 throw new Error(
                     "Empty response received from server."
@@ -129,7 +121,6 @@ function Login() {
             }
 
             const data = response.data;
-
 
             // ==================================================
             // TOKEN
@@ -144,7 +135,6 @@ function Login() {
                 );
             }
 
-
             // ==================================================
             // USER
             // ==================================================
@@ -155,32 +145,28 @@ function Login() {
                 data?.user &&
                 typeof data.user === "object"
             ) {
-
                 loggedInUser = data.user;
+            }
 
-            } else if (
+            else if (
                 data?.data?.user &&
                 typeof data.data.user === "object"
             ) {
-
                 loggedInUser = data.data.user;
-
-            } else if (data?.role) {
-
-                loggedInUser = data;
-
             }
 
+            else if (data?.role) {
+                loggedInUser = data;
+            }
 
             // ==================================================
-            // CHECK USER ROLE
+            // CHECK ROLE
             // ==================================================
 
             if (
                 !loggedInUser ||
                 !loggedInUser.role
             ) {
-
                 console.error(
                     "Login response does not contain user role:",
                     data
@@ -190,7 +176,6 @@ function Login() {
                     "Login response did not contain a valid user role."
                 );
             }
-
 
             // ==================================================
             // SAVE LOGIN DATA
@@ -211,15 +196,7 @@ function Login() {
                 loggedInUser
             );
 
-
-            // ==================================================
-            // SUCCESS MESSAGE
-            // ==================================================
-
-            toast.success(
-                "Login Successful"
-            );
-
+            toast.success("Login Successful");
 
             // ==================================================
             // REDIRECT
@@ -228,21 +205,19 @@ function Login() {
             const role =
                 String(loggedInUser.role).toLowerCase();
 
-
             if (role === "admin") {
-
                 navigate("/admin");
+            }
 
-            } else if (role === "teacher") {
-
+            else if (role === "teacher") {
                 navigate("/teacher");
+            }
 
-            } else if (role === "student") {
-
+            else if (role === "student") {
                 navigate("/student");
+            }
 
-            } else {
-
+            else {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
 
@@ -266,9 +241,7 @@ function Login() {
             toast.error(message);
 
         } finally {
-
             setLoading(false);
-
         }
     };
 
@@ -278,7 +251,6 @@ function Login() {
     // ==================================================
 
     return (
-
         <div
             className="login-page"
             style={{
@@ -292,7 +264,7 @@ function Login() {
                 <div className="login-container">
 
                     <div
-                        className="login-card card border-0 shadow-lg rounded-4"
+                        className="card border-0 shadow-lg rounded-4 login-card"
                         style={{
                             background:
                                 "rgba(255,255,255,0.18)",
@@ -305,14 +277,14 @@ function Login() {
 
                         <div className="card-body">
 
-                            {/* ==================================
+                            {/* ==================================================
                                 LOGO
-                            ================================== */}
+                            ================================================== */}
 
                             <div className="text-center mb-4">
 
                                 <div
-                                    className="login-logo d-inline-flex justify-content-center align-items-center rounded-circle bg-white shadow"
+                                    className="d-inline-flex justify-content-center align-items-center rounded-circle bg-white shadow login-logo"
                                 >
 
                                     <i
@@ -321,11 +293,9 @@ function Login() {
 
                                 </div>
 
-
-                                <h2 className="fw-bold text-white">
+                                <h2 className="fw-bold text-white mb-2">
                                     School Management
                                 </h2>
-
 
                                 <p className="text-white-50 mb-0">
                                     Welcome Back! Please login to continue.
@@ -334,9 +304,9 @@ function Login() {
                             </div>
 
 
-                            {/* ==================================
+                            {/* ==================================================
                                 LOGIN FORM
-                            ================================== */}
+                            ================================================== */}
 
                             <form
                                 onSubmit={(e) => {
@@ -345,9 +315,9 @@ function Login() {
                                 }}
                             >
 
-                                {/* ==================================
+                                {/* ==================================================
                                     USERNAME
-                                ================================== */}
+                                ================================================== */}
 
                                 <div className="mb-4">
 
@@ -355,14 +325,13 @@ function Login() {
                                         Username
                                     </label>
 
-                                    <div className="input-group input-group-lg">
+                                    <div className="input-group login-input-group">
 
                                         <span className="input-group-text bg-white border-end-0">
 
                                             <i className="bi bi-person-fill"></i>
 
                                         </span>
-
 
                                         <input
                                             type="text"
@@ -379,9 +348,9 @@ function Login() {
                                 </div>
 
 
-                                {/* ==================================
+                                {/* ==================================================
                                     PASSWORD
-                                ================================== */}
+                                ================================================== */}
 
                                 <div className="mb-4">
 
@@ -389,15 +358,13 @@ function Login() {
                                         Password
                                     </label>
 
-
-                                    <div className="input-group input-group-lg">
+                                    <div className="input-group login-input-group">
 
                                         <span className="input-group-text bg-white border-end-0">
 
                                             <i className="bi bi-lock-fill"></i>
 
                                         </span>
-
 
                                         <input
                                             type={
@@ -413,25 +380,25 @@ function Login() {
                                             autoComplete="current-password"
                                         />
 
-
                                         <button
                                             type="button"
-                                            className="btn btn-light"
+                                            className="btn btn-light login-eye-button"
                                             onClick={() =>
                                                 setShowPassword(
                                                     !showPassword
                                                 )
                                             }
+                                            aria-label={
+                                                showPassword
+                                                    ? "Hide password"
+                                                    : "Show password"
+                                            }
                                         >
 
                                             {showPassword ? (
-
                                                 <i className="bi bi-eye-slash-fill"></i>
-
                                             ) : (
-
                                                 <i className="bi bi-eye-fill"></i>
-
                                             )}
 
                                         </button>
@@ -441,11 +408,11 @@ function Login() {
                                 </div>
 
 
-                                {/* ==================================
+                                {/* ==================================================
                                     REMEMBER / FORGOT
-                                ================================== */}
+                                ================================================== */}
 
-                                <div className="login-options d-flex justify-content-between align-items-center mb-4">
+                                <div className="login-options">
 
                                     <div className="form-check">
 
@@ -464,7 +431,6 @@ function Login() {
 
                                     </div>
 
-
                                     <a
                                         href="#"
                                         className="text-warning text-decoration-none fw-semibold"
@@ -478,32 +444,28 @@ function Login() {
                                 </div>
 
 
-                                {/* ==================================
+                                {/* ==================================================
                                     LOGIN BUTTON
-                                ================================== */}
+                                ================================================== */}
 
                                 <div className="d-grid">
 
                                     <button
                                         type="submit"
-                                        className="btn btn-warning login-button fw-bold shadow"
+                                        className="btn btn-warning fw-bold shadow login-button"
                                         disabled={loading}
                                     >
 
                                         {loading ? (
-
                                             <>
                                                 <span className="spinner-border spinner-border-sm me-2"></span>
                                                 Logging In...
                                             </>
-
                                         ) : (
-
                                             <>
                                                 <i className="bi bi-box-arrow-in-right me-2"></i>
                                                 Login
                                             </>
-
                                         )}
 
                                     </button>
@@ -513,12 +475,11 @@ function Login() {
                             </form>
 
 
-                            {/* ==================================
+                            {/* ==================================================
                                 FOOTER
-                            ================================== */}
+                            ================================================== */}
 
                             <hr className="border-light my-4" />
-
 
                             <div className="text-center">
 

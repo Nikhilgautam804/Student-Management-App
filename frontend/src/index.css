@@ -85,9 +85,7 @@ body {
 
 #root {
     width: 100%;
-
     min-height: 100vh;
-
     height: auto;
 
     margin: 0;
@@ -103,7 +101,6 @@ body {
 
 .app-layout {
     width: 100%;
-
     min-height: 100vh;
 
     margin: 0;
@@ -116,9 +113,6 @@ body {
 
 /* =========================================================
    NAVBAR
-   IMPORTANT:
-   Navbar is NOT fixed.
-   It stays in normal document flow.
 ========================================================= */
 
 .app-layout > .navbar {
@@ -141,7 +135,6 @@ body {
 
 /* =========================================================
    APP BODY
-   SIDEBAR + MAIN CONTENT
 ========================================================= */
 
 .app-body {
@@ -168,7 +161,6 @@ body {
     flex: 1 1 auto;
 
     width: auto;
-
     min-width: 0;
 
     min-height: calc(100vh - 56px);
@@ -188,7 +180,6 @@ body {
 
 .app-content {
     width: 100%;
-
     min-width: 0;
 
     min-height: calc(100vh - 56px);
@@ -389,7 +380,6 @@ button:hover,
 
 a {
     color: inherit;
-
     text-decoration: none;
 }
 
@@ -428,7 +418,6 @@ a {
 
 /* =========================================================
    MAIN ELEMENTS
-   DO NOT LOCK PAGE HEIGHT
 ========================================================= */
 
 main {
@@ -450,7 +439,6 @@ main {
     body,
     #root {
         width: 100%;
-
         height: auto;
 
         min-height: 100vh;
@@ -458,7 +446,6 @@ main {
         overflow-x: hidden;
         overflow-y: auto;
     }
-
 
     .app-layout {
         width: 100%;
@@ -468,7 +455,6 @@ main {
         overflow-x: hidden;
         overflow-y: visible;
     }
-
 
     .app-body {
         display: flex;
@@ -480,12 +466,10 @@ main {
         overflow: visible;
     }
 
-
     .app-main {
         flex: 1 1 auto;
 
         width: auto;
-
         min-width: 0;
 
         min-height: calc(100vh - 56px);
@@ -495,7 +479,6 @@ main {
 
         overflow: visible;
     }
-
 
     .app-content {
         width: 100%;
@@ -532,14 +515,12 @@ main {
         overflow-y: auto;
     }
 
-
     body {
         min-width: 320px;
 
         overflow-x: hidden;
         overflow-y: auto;
     }
-
 
     .app-layout {
         width: 100%;
@@ -549,12 +530,6 @@ main {
         overflow-x: hidden;
         overflow-y: visible;
     }
-
-
-    /*
-        Mobile par sidebar
-        content ko push nahi karega.
-    */
 
     .app-body {
         display: block;
@@ -569,12 +544,10 @@ main {
         overflow: visible;
     }
 
-
     .app-main {
         display: block;
 
         width: 100% !important;
-
         max-width: 100%;
 
         min-width: 0;
@@ -587,10 +560,8 @@ main {
         overflow: visible;
     }
 
-
     .app-content {
         width: 100%;
-
         max-width: 100%;
 
         min-width: 0;
@@ -605,12 +576,6 @@ main {
 
         overflow: visible;
     }
-
-
-    /*
-        IMPORTANT:
-        Generic main ko extra padding nahi dena.
-    */
 
     main {
         width: 100% !important;
@@ -630,14 +595,9 @@ main {
 
 /* =========================================================
    MOBILE COMPACT UI
-   Desktop layout ko touch nahi karta
 ========================================================= */
 
 @media (max-width: 767.98px) {
-
-    /* ===============================
-       GLOBAL MOBILE SIZING
-    =============================== */
 
     body {
         font-size: 14px;
@@ -668,9 +628,7 @@ main {
     }
 
 
-    /* ===============================
-       MAIN CONTENT
-    =============================== */
+    /* MAIN */
 
     main {
         padding: 10px !important;
@@ -685,9 +643,7 @@ main {
     }
 
 
-    /* ===============================
-       DASHBOARD HEADERS
-    =============================== */
+    /* DASHBOARD */
 
     .mb-4 {
         margin-bottom: 1rem !important;
@@ -698,9 +654,7 @@ main {
     }
 
 
-    /* ===============================
-       DASHBOARD CARDS
-    =============================== */
+    /* CARDS */
 
     .card {
         border-radius: 0.7rem !important;
@@ -716,9 +670,7 @@ main {
     }
 
 
-    /* ===============================
-       DASHBOARD STAT CARDS
-    =============================== */
+    /* ROWS */
 
     .row {
         --bs-gutter-x: 0.7rem;
@@ -731,39 +683,45 @@ main {
     }
 
 
-    /* ===============================
-       BUTTONS
-    =============================== */
+    /* BUTTONS */
 
     .btn {
         font-size: 0.85rem !important;
-        padding: 0.55rem 0.8rem !important;
-        border-radius: 0.65rem !important;
+
+        padding:
+            0.55rem 0.8rem !important;
+
+        border-radius:
+            0.65rem !important;
     }
 
 
-    /* ===============================
-       FORM INPUTS
-    =============================== */
+    /* FORMS */
 
     .form-control,
     .form-select {
         min-height: 42px !important;
+
         height: 42px;
-        padding: 0.5rem 0.7rem !important;
-        font-size: 0.85rem !important;
-        border-radius: 0.65rem !important;
+
+        padding:
+            0.5rem 0.7rem !important;
+
+        font-size:
+            0.85rem !important;
+
+        border-radius:
+            0.65rem !important;
     }
 
     textarea.form-control {
         height: auto;
+
         min-height: 90px !important;
     }
 
 
-    /* ===============================
-       TABLES
-    =============================== */
+    /* TABLES */
 
     .table {
         font-size: 0.75rem;
@@ -772,13 +730,12 @@ main {
     .table th,
     .table td {
         padding: 0.45rem !important;
+
         white-space: nowrap;
     }
 
 
-    /* ===============================
-       NAVBAR
-    =============================== */
+    /* NAVBAR */
 
     .navbar {
         min-height: 50px !important;
@@ -790,17 +747,18 @@ main {
 
     .navbar .btn {
         width: 38px !important;
+
         height: 38px !important;
+
         padding: 0 !important;
     }
 
 
-    /* ===============================
-       MOBILE SIDEBAR / OFFCANVAS
-    =============================== */
+    /* SIDEBAR */
 
     .offcanvas {
         width: 300px !important;
+
         max-width: 82vw !important;
     }
 
@@ -813,70 +771,41 @@ main {
     }
 
     .sidebar-link {
-        padding: 0.65rem 0.7rem !important;
-        font-size: 0.9rem !important;
+        padding:
+            0.65rem 0.7rem !important;
+
+        font-size:
+            0.9rem !important;
     }
 
 
-    /* ===============================
-       LIST GROUP
-    =============================== */
+    /* LIST GROUP */
 
     .list-group-item {
-        padding: 0.65rem 0.75rem !important;
-        font-size: 0.85rem;
+        padding:
+            0.65rem 0.75rem !important;
+
+        font-size:
+            0.85rem;
     }
 
 
-    /* ===============================
-       QUICK ACTIONS
-    =============================== */
+    /* QUICK ACTIONS */
 
     .py-3 {
-        padding-top: 0.7rem !important;
-        padding-bottom: 0.7rem !important;
+        padding-top:
+            0.7rem !important;
+
+        padding-bottom:
+            0.7rem !important;
     }
 
 
-    /* ===============================
-       CHART CONTAINERS
-    =============================== */
+    /* CHARTS */
 
     .recharts-responsive-container {
         min-height: 220px !important;
     }
-
-
-    /* ===============================
-       LOGIN PAGE
-    =============================== */
-
-    .login-container,
-    .login-card {
-        width: 92% !important;
-        max-width: 420px !important;
-    }
-
-    .login-card {
-        padding: 1.25rem !important;
-        border-radius: 0.9rem !important;
-    }
-
-    .login-card h1,
-    .login-card h2 {
-        font-size: 1.6rem !important;
-    }
-
-    .login-card input {
-        height: 44px !important;
-        font-size: 0.9rem !important;
-    }
-
-    .login-card button {
-        min-height: 44px !important;
-        font-size: 0.95rem !important;
-    }
-
 }
 
 
@@ -919,25 +848,945 @@ main {
     }
 
     .card-header {
-        padding: 0.55rem 0.65rem !important;
-        font-size: 0.82rem !important;
+        padding:
+            0.55rem 0.65rem !important;
+
+        font-size:
+            0.82rem !important;
     }
 
     .form-control,
     .form-select {
         min-height: 40px !important;
+
         height: 40px;
-        font-size: 0.8rem !important;
+
+        font-size:
+            0.8rem !important;
     }
 
     .btn {
-        font-size: 0.8rem !important;
-        padding: 0.5rem 0.7rem !important;
+        font-size:
+            0.8rem !important;
+
+        padding:
+            0.5rem 0.7rem !important;
     }
 
     .offcanvas {
         width: 280px !important;
+
         max-width: 82vw !important;
     }
+}
 
+
+/* =========================================================
+   =========================================================
+   LOGIN PAGE
+   ONLY LOGIN PAGE
+   =========================================================
+   ========================================================= */
+
+.login-page {
+    width: 100%;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+    padding: 16px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+.login-row {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+}
+
+
+.login-container {
+    width: 100%;
+
+    max-width: 400px;
+
+    margin: 0 auto;
+}
+
+
+.login-card {
+    width: 100%;
+
+    max-width: 400px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+}
+
+
+.login-card .card-body {
+    padding: 32px !important;
+}
+
+
+/* =========================================================
+   LOGIN LOGO
+========================================================= */
+
+.login-logo {
+    width: 80px !important;
+
+    height: 80px !important;
+
+    margin-bottom: 12px !important;
+
+    flex-shrink: 0;
+}
+
+
+.login-logo i {
+    font-size: 32px !important;
+
+    color: #4f46e5;
+}
+
+
+/* =========================================================
+   LOGIN TITLE
+========================================================= */
+
+.login-card h2 {
+    font-size: 1.65rem !important;
+
+    line-height: 1.2;
+
+    margin-bottom: 8px !important;
+}
+
+
+.login-card p {
+    font-size: 0.9rem !important;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   LOGIN LABEL
+========================================================= */
+
+.login-card .form-label {
+    display: block;
+
+    font-size: 0.95rem !important;
+
+    margin-bottom: 7px !important;
+}
+
+
+/* =========================================================
+   LOGIN INPUT GROUP
+========================================================= */
+
+.login-input-group {
+    width: 100% !important;
+
+    display: flex !important;
+
+    flex-wrap: nowrap !important;
+
+    align-items: stretch !important;
+
+    position: relative !important;
+
+    margin: 0 !important;
+}
+
+
+/* =========================================================
+   LOGIN LEFT ICON
+========================================================= */
+
+.login-input-group > .input-group-text {
+    flex: 0 0 50px !important;
+
+    width: 50px !important;
+
+    min-width: 50px !important;
+
+    max-width: 50px !important;
+
+    height: 48px !important;
+
+    min-height: 48px !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    border-radius: 10px 0 0 10px !important;
+}
+
+
+.login-input-group > .input-group-text i {
+    font-size: 17px !important;
+}
+
+
+/* =========================================================
+   LOGIN INPUT
+========================================================= */
+
+.login-input-group > .form-control {
+    flex: 1 1 0 !important;
+
+    width: 0 !important;
+
+    min-width: 0 !important;
+
+    max-width: none !important;
+
+    height: 48px !important;
+
+    min-height: 48px !important;
+
+    margin: 0 !important;
+
+    padding:
+        8px 12px !important;
+
+    font-size:
+        0.9rem !important;
+
+    border-radius:
+        0 10px 10px 0 !important;
+}
+
+
+/* =========================================================
+   PASSWORD INPUT
+========================================================= */
+
+.login-input-group
+> .form-control.border-end-0 {
+    border-radius: 0 !important;
+}
+
+
+/* =========================================================
+   LOGIN EYE BUTTON
+========================================================= */
+
+.login-eye-button {
+    flex: 0 0 50px !important;
+
+    width: 50px !important;
+
+    min-width: 50px !important;
+
+    max-width: 50px !important;
+
+    height: 48px !important;
+
+    min-height: 48px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    border-radius:
+        0 10px 10px 0 !important;
+}
+
+
+.login-eye-button i {
+    font-size: 17px !important;
+}
+
+
+/* =========================================================
+   LOGIN OPTIONS
+========================================================= */
+
+.login-options {
+    width: 100%;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: space-between !important;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+
+.login-options .form-check {
+    display: flex !important;
+
+    align-items: center !important;
+
+    flex-shrink: 0;
+
+    margin: 0 !important;
+}
+
+
+.login-options .form-check-input {
+    width: 17px !important;
+
+    height: 17px !important;
+
+    min-width: 17px !important;
+
+    min-height: 17px !important;
+
+    margin:
+        0 7px 0 0 !important;
+}
+
+
+.login-options .form-check-label {
+    font-size: 0.82rem !important;
+
+    white-space: nowrap;
+}
+
+
+.login-options a {
+    margin-left: auto;
+
+    font-size: 0.82rem !important;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button {
+    width: 100% !important;
+
+    height: 48px !important;
+
+    min-height: 48px !important;
+
+    padding:
+        0 16px !important;
+
+    font-size:
+        0.95rem !important;
+
+    border-radius:
+        10px !important;
+}
+
+
+/* =========================================================
+   LOGIN FOOTER
+========================================================= */
+
+.login-card hr {
+    margin-top: 22px !important;
+
+    margin-bottom: 22px !important;
+}
+
+
+.login-card small {
+    font-size: 0.72rem !important;
+}
+
+
+/* =========================================================
+   MOBILE LOGIN
+========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .login-page {
+        width: 100% !important;
+
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+
+        padding:
+            12px !important;
+
+        align-items: center !important;
+
+        justify-content: center !important;
+    }
+
+
+    .login-row {
+        width: 100% !important;
+
+        max-width: 100% !important;
+    }
+
+
+    .login-container {
+        width: 100% !important;
+
+        max-width: 390px !important;
+
+        margin: 0 auto !important;
+    }
+
+
+    .login-card {
+        width: 100% !important;
+
+        max-width: 390px !important;
+
+        margin: 0 auto !important;
+
+        border-radius:
+            18px !important;
+    }
+
+
+    .login-card .card-body {
+        width: 100% !important;
+
+        padding:
+            24px 18px !important;
+    }
+
+
+    /* =====================================================
+       LOGO
+    ===================================================== */
+
+    .login-logo {
+        width: 64px !important;
+
+        height: 64px !important;
+
+        margin-bottom:
+            10px !important;
+    }
+
+
+    .login-logo i {
+        font-size:
+            26px !important;
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .login-card h2 {
+        font-size:
+            1.4rem !important;
+
+        line-height:
+            1.2 !important;
+
+        white-space:
+            nowrap !important;
+
+        margin-bottom:
+            6px !important;
+    }
+
+
+    .login-card p {
+        font-size:
+            0.78rem !important;
+
+        line-height:
+            1.35 !important;
+    }
+
+
+    /* =====================================================
+       FORM
+    ===================================================== */
+
+    .login-card form {
+        margin-top:
+            18px !important;
+    }
+
+
+    .login-card form .mb-4 {
+        margin-bottom:
+            15px !important;
+    }
+
+
+    .login-card .form-label {
+        font-size:
+            0.85rem !important;
+
+        margin-bottom:
+            5px !important;
+    }
+
+
+    /* =====================================================
+       INPUT GROUP
+       NEVER WRAP
+    ===================================================== */
+
+    .login-input-group {
+        width: 100% !important;
+
+        display: flex !important;
+
+        flex-direction: row !important;
+
+        flex-wrap: nowrap !important;
+
+        align-items: stretch !important;
+
+        height: 44px !important;
+
+        min-height: 44px !important;
+    }
+
+
+    /* =====================================================
+       LEFT ICON
+    ===================================================== */
+
+    .login-input-group > .input-group-text {
+        flex:
+            0 0 44px !important;
+
+        width:
+            44px !important;
+
+        min-width:
+            44px !important;
+
+        max-width:
+            44px !important;
+
+        height:
+            44px !important;
+
+        min-height:
+            44px !important;
+
+        padding:
+            0 !important;
+
+        margin:
+            0 !important;
+
+        border-radius:
+            9px 0 0 9px !important;
+    }
+
+
+    /* =====================================================
+       INPUT
+    ===================================================== */
+
+    .login-input-group > .form-control {
+        flex:
+            1 1 0 !important;
+
+        width:
+            0 !important;
+
+        min-width:
+            0 !important;
+
+        max-width:
+            none !important;
+
+        height:
+            44px !important;
+
+        min-height:
+            44px !important;
+
+        padding:
+            6px 10px !important;
+
+        margin:
+            0 !important;
+
+        font-size:
+            0.82rem !important;
+
+        border-radius:
+            0 9px 9px 0 !important;
+    }
+
+
+    /* =====================================================
+       PASSWORD INPUT
+    ===================================================== */
+
+    .login-input-group
+    > .form-control.border-end-0 {
+        border-radius:
+            0 !important;
+    }
+
+
+    /* =====================================================
+       EYE BUTTON
+    ===================================================== */
+
+    .login-eye-button {
+        flex:
+            0 0 44px !important;
+
+        width:
+            44px !important;
+
+        min-width:
+            44px !important;
+
+        max-width:
+            44px !important;
+
+        height:
+            44px !important;
+
+        min-height:
+            44px !important;
+
+        padding:
+            0 !important;
+
+        margin:
+            0 !important;
+
+        border-radius:
+            0 9px 9px 0 !important;
+    }
+
+
+    .login-input-group
+    .input-group-text i,
+    .login-eye-button i {
+        font-size:
+            15px !important;
+    }
+
+
+    /* =====================================================
+       OPTIONS
+    ===================================================== */
+
+    .login-options {
+        width:
+            100% !important;
+
+        display:
+            flex !important;
+
+        flex-direction:
+            row !important;
+
+        flex-wrap:
+            nowrap !important;
+
+        align-items:
+            center !important;
+
+        justify-content:
+            space-between !important;
+
+        gap:
+            8px !important;
+
+        margin-top:
+            2px !important;
+
+        margin-bottom:
+            16px !important;
+    }
+
+
+    .login-options .form-check {
+        flex:
+            0 1 auto !important;
+
+        min-width:
+            0 !important;
+    }
+
+
+    .login-options .form-check-input {
+        width:
+            16px !important;
+
+        height:
+            16px !important;
+
+        min-width:
+            16px !important;
+
+        min-height:
+            16px !important;
+
+        margin-right:
+            6px !important;
+    }
+
+
+    .login-options .form-check-label {
+        font-size:
+            0.72rem !important;
+
+        white-space:
+            nowrap !important;
+    }
+
+
+    .login-options a {
+        flex-shrink:
+            0 !important;
+
+        font-size:
+            0.72rem !important;
+
+        white-space:
+            nowrap !important;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ===================================================== */
+
+    .login-button {
+        width:
+            100% !important;
+
+        height:
+            44px !important;
+
+        min-height:
+            44px !important;
+
+        padding:
+            0 12px !important;
+
+        font-size:
+            0.88rem !important;
+
+        border-radius:
+            9px !important;
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    .login-card hr {
+        margin-top:
+            18px !important;
+
+        margin-bottom:
+            18px !important;
+    }
+
+
+    .login-card small {
+        font-size:
+            0.68rem !important;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .login-page {
+        padding:
+            8px !important;
+    }
+
+
+    .login-container,
+    .login-card {
+        max-width:
+            360px !important;
+    }
+
+
+    .login-card .card-body {
+        padding:
+            20px 14px !important;
+    }
+
+
+    .login-logo {
+        width:
+            56px !important;
+
+        height:
+            56px !important;
+    }
+
+
+    .login-logo i {
+        font-size:
+            23px !important;
+    }
+
+
+    .login-card h2 {
+        font-size:
+            1.25rem !important;
+    }
+
+
+    .login-card p {
+        font-size:
+            0.72rem !important;
+    }
+
+
+    /* INPUT GROUP */
+
+    .login-input-group {
+        height:
+            42px !important;
+
+        min-height:
+            42px !important;
+
+        flex-wrap:
+            nowrap !important;
+    }
+
+
+    .login-input-group > .input-group-text {
+        flex:
+            0 0 42px !important;
+
+        width:
+            42px !important;
+
+        min-width:
+            42px !important;
+
+        max-width:
+            42px !important;
+
+        height:
+            42px !important;
+
+        min-height:
+            42px !important;
+    }
+
+
+    .login-input-group > .form-control {
+        flex:
+            1 1 0 !important;
+
+        width:
+            0 !important;
+
+        min-width:
+            0 !important;
+
+        height:
+            42px !important;
+
+        min-height:
+            42px !important;
+
+        padding:
+            5px 8px !important;
+
+        font-size:
+            0.77rem !important;
+    }
+
+
+    .login-eye-button {
+        flex:
+            0 0 42px !important;
+
+        width:
+            42px !important;
+
+        min-width:
+            42px !important;
+
+        max-width:
+            42px !important;
+
+        height:
+            42px !important;
+
+        min-height:
+            42px !important;
+    }
+
+
+    .login-options {
+        gap:
+            5px !important;
+    }
+
+
+    .login-options .form-check-label,
+    .login-options a {
+        font-size:
+            0.67rem !important;
+    }
+
+
+    .login-button {
+        height:
+            42px !important;
+
+        min-height:
+            42px !important;
+
+        font-size:
+            0.84rem !important;
+    }
 }
