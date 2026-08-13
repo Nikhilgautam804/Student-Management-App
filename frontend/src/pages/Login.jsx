@@ -14,6 +14,7 @@ function Login() {
         password: ""
     });
 
+
     // ==================================================
     // REDIRECT IF ALREADY LOGGED IN
     // ==================================================
@@ -22,6 +23,7 @@ function Login() {
         const token = localStorage.getItem("token");
         const storedUser = localStorage.getItem("user");
 
+        // Nothing stored
         if (!token || !storedUser) {
             return;
         }
@@ -29,6 +31,7 @@ function Login() {
         let user = null;
 
         try {
+            // Prevent JSON.parse(undefined/null/string issues)
             if (
                 storedUser !== "undefined" &&
                 storedUser !== "null"
@@ -47,6 +50,7 @@ function Login() {
             return;
         }
 
+        // Make sure user object and role exist
         if (!user || !user.role) {
             localStorage.removeItem("user");
             localStorage.removeItem("token");
@@ -54,13 +58,12 @@ function Login() {
             return;
         }
 
-        const role = String(user.role).toLowerCase();
-
-        if (role === "admin") {
+        // Redirect according to role
+        if (user.role === "admin") {
             navigate("/admin");
-        } else if (role === "teacher") {
+        } else if (user.role === "teacher") {
             navigate("/teacher");
-        } else if (role === "student") {
+        } else if (user.role === "student") {
             navigate("/student");
         }
     }, [navigate]);
@@ -95,10 +98,13 @@ function Login() {
         }
 
         try {
+
             setLoading(true);
 
+            // Remove old invalid login data
             localStorage.removeItem("token");
             localStorage.removeItem("user");
+
 
             // ==================================================
             // LOGIN API
@@ -109,10 +115,16 @@ function Login() {
                 formData
             );
 
+
             console.log(
                 "LOGIN RESPONSE:",
                 response.data
             );
+
+
+            // ==================================================
+            // CHECK RESPONSE
+            // ==================================================
 
             if (!response || !response.data) {
                 throw new Error(
@@ -120,7 +132,9 @@ function Login() {
                 );
             }
 
+
             const data = response.data;
+
 
             // ==================================================
             // TOKEN
@@ -135,11 +149,31 @@ function Login() {
                 );
             }
 
+
             // ==================================================
             // USER
             // ==================================================
 
+            /*
+                Expected backend response:
+
+                {
+                    token: "...",
+                    user: {
+                        role: "student"
+                    }
+                }
+
+                Also supports:
+
+                {
+                    token: "...",
+                    role: "student"
+                }
+            */
+
             let loggedInUser = null;
+
 
             if (
                 data?.user &&
@@ -155,18 +189,22 @@ function Login() {
                 loggedInUser = data.data.user;
             }
 
-            else if (data?.role) {
+            else if (
+                data?.role
+            ) {
                 loggedInUser = data;
             }
 
+
             // ==================================================
-            // CHECK ROLE
+            // CHECK USER ROLE
             // ==================================================
 
             if (
                 !loggedInUser ||
                 !loggedInUser.role
             ) {
+
                 console.error(
                     "Login response does not contain user role:",
                     data
@@ -176,6 +214,7 @@ function Login() {
                     "Login response did not contain a valid user role."
                 );
             }
+
 
             // ==================================================
             // SAVE LOGIN DATA
@@ -191,12 +230,17 @@ function Login() {
                 JSON.stringify(loggedInUser)
             );
 
+
             console.log(
                 "Logged in user:",
                 loggedInUser
             );
 
-            toast.success("Login Successful");
+
+            toast.success(
+                "Login Successful"
+            );
+
 
             // ==================================================
             // REDIRECT
@@ -205,19 +249,28 @@ function Login() {
             const role =
                 String(loggedInUser.role).toLowerCase();
 
+
             if (role === "admin") {
+
                 navigate("/admin");
+
             }
 
             else if (role === "teacher") {
+
                 navigate("/teacher");
+
             }
 
             else if (role === "student") {
+
                 navigate("/student");
+
             }
 
             else {
+
+                // Unknown role
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
 
@@ -226,22 +279,30 @@ function Login() {
                 );
             }
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(
                 "LOGIN ERROR:",
                 error
             );
 
+
             const message =
                 error?.response?.data?.message ||
                 error?.message ||
                 "Login Failed";
 
+
             toast.error(message);
 
-        } finally {
+        }
+
+        finally {
+
             setLoading(false);
+
         }
     };
 
@@ -252,19 +313,19 @@ function Login() {
 
     return (
         <div
-            className="login-page"
+            className="container-fluid min-vh-100 d-flex justify-content-center align-items-center"
             style={{
                 background:
                     "linear-gradient(135deg,#4F46E5,#7C3AED,#2563EB)"
             }}
         >
 
-            <div className="login-row">
+            <div className="row justify-content-center w-100">
 
-                <div className="login-container">
+                <div className="col-11 col-sm-9 col-md-7 col-lg-5 col-xl-4">
 
                     <div
-                        className="card border-0 shadow-lg rounded-4 login-card"
+                        className="card border-0 shadow-lg rounded-4"
                         style={{
                             background:
                                 "rgba(255,255,255,0.18)",
@@ -275,20 +336,25 @@ function Login() {
                         }}
                     >
 
-                        <div className="card-body">
+                        <div className="card-body p-5">
 
-                            {/* ==================================================
-                                LOGO
-                            ================================================== */}
+                            {/* Logo */}
 
                             <div className="text-center mb-4">
 
                                 <div
-                                    className="d-inline-flex justify-content-center align-items-center rounded-circle bg-white shadow login-logo"
+                                    className="d-inline-flex justify-content-center align-items-center rounded-circle bg-white shadow mb-3"
+                                    style={{
+                                        width: "80px",
+                                        height: "80px"
+                                    }}
                                 >
 
                                     <i
-                                        className="bi bi-building"
+                                        className="bi bi-building fs-2"
+                                        style={{
+                                            color: "#4F46E5"
+                                        }}
                                     ></i>
 
                                 </div>
@@ -304,9 +370,7 @@ function Login() {
                             </div>
 
 
-                            {/* ==================================================
-                                LOGIN FORM
-                            ================================================== */}
+                            {/* Login Form */}
 
                             <form
                                 onSubmit={(e) => {
@@ -315,9 +379,7 @@ function Login() {
                                 }}
                             >
 
-                                {/* ==================================================
-                                    USERNAME
-                                ================================================== */}
+                                {/* Username */}
 
                                 <div className="mb-4">
 
@@ -325,12 +387,10 @@ function Login() {
                                         Username
                                     </label>
 
-                                    <div className="input-group login-input-group">
+                                    <div className="input-group input-group-lg">
 
                                         <span className="input-group-text bg-white border-end-0">
-
                                             <i className="bi bi-person-fill"></i>
-
                                         </span>
 
                                         <input
@@ -348,9 +408,7 @@ function Login() {
                                 </div>
 
 
-                                {/* ==================================================
-                                    PASSWORD
-                                ================================================== */}
+                                {/* Password */}
 
                                 <div className="mb-4">
 
@@ -358,12 +416,10 @@ function Login() {
                                         Password
                                     </label>
 
-                                    <div className="input-group login-input-group">
+                                    <div className="input-group input-group-lg">
 
                                         <span className="input-group-text bg-white border-end-0">
-
                                             <i className="bi bi-lock-fill"></i>
-
                                         </span>
 
                                         <input
@@ -382,16 +438,11 @@ function Login() {
 
                                         <button
                                             type="button"
-                                            className="btn btn-light login-eye-button"
+                                            className="btn btn-light"
                                             onClick={() =>
                                                 setShowPassword(
                                                     !showPassword
                                                 )
-                                            }
-                                            aria-label={
-                                                showPassword
-                                                    ? "Hide password"
-                                                    : "Show password"
                                             }
                                         >
 
@@ -408,11 +459,9 @@ function Login() {
                                 </div>
 
 
-                                {/* ==================================================
-                                    REMEMBER / FORGOT
-                                ================================================== */}
+                                {/* Remember */}
 
-                                <div className="login-options">
+                                <div className="d-flex justify-content-between align-items-center mb-4">
 
                                     <div className="form-check">
 
@@ -444,15 +493,13 @@ function Login() {
                                 </div>
 
 
-                                {/* ==================================================
-                                    LOGIN BUTTON
-                                ================================================== */}
+                                {/* Login */}
 
                                 <div className="d-grid">
 
                                     <button
                                         type="submit"
-                                        className="btn btn-warning fw-bold shadow login-button"
+                                        className="btn btn-warning btn-lg rounded-pill fw-bold shadow"
                                         disabled={loading}
                                     >
 
@@ -475,11 +522,8 @@ function Login() {
                             </form>
 
 
-                            {/* ==================================================
-                                FOOTER
-                            ================================================== */}
-
                             <hr className="border-light my-4" />
+
 
                             <div className="text-center">
 
